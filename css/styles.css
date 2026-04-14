@@ -1,0 +1,826 @@
+/* ── RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:       #D4AF37;
+  --gold-light: #F0D060;
+  --gold-dark:  #9A7D10;
+  --teal:       #1E5F5F;
+  --teal-light: #2D8080;
+  --cream:      #FFF8E1;
+  --ivory:      #FAEBD7;
+  --red:        #8B1A1A;
+  --haldi-bg:   #7B3F00;
+  --sangeet-bg: #3D0C5E;
+  --vivaah-bg:  #5C0A0A;
+  --reception-bg: #0A2E3D;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: #0d1c1c;
+  color: var(--cream);
+}
+
+/* ── PETALS ───────────────────────────────────────────── */
+#petals-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 50% 0 50% 0;
+  opacity: 0;
+  animation: petalFall linear infinite;
+}
+@keyframes petalFall {
+  0%   { transform: translateY(-20px) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.5; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── SPLASH SCREEN ────────────────────────────────────── */
+#splash {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10, 8, 4, 0.72);
+  backdrop-filter: blur(18px) saturate(0.8);
+  -webkit-backdrop-filter: blur(18px) saturate(0.8);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#splash.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+#splash-inner {
+  text-align: center; padding: 40px 32px;
+  max-width: 420px;
+  animation: fadeIn 1s ease both;
+}
+#splash-shri-ganesh {
+  font-size: clamp(16px, 4vw, 22px);
+  color: var(--gold);
+  letter-spacing: 0;
+  margin-bottom: 10px;
+  text-shadow: 0 0 18px rgba(212,175,55,0.6);
+}
+#splash-couple {
+  width: clamp(180px, 48vw, 260px);
+  height: clamp(180px, 48vw, 260px);
+  object-fit: cover;
+  object-position: center 15%;
+  border-radius: 50%;
+  border: 3px solid rgba(212,175,55,0.7);
+  box-shadow: 0 0 32px rgba(212,175,55,0.4);
+  margin-bottom: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  animation: floatPetal 3s ease-in-out infinite;
+}
+#splash-rings {
+  font-size: clamp(40px, 10vw, 64px);
+  margin-bottom: 20px;
+  animation: floatPetal 3s ease-in-out infinite;
+}
+#splash-guest {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(32px, 7vw, 52px);
+  color: var(--gold-light);
+  margin: 0 0 6px;
+  text-shadow: 0 0 24px rgba(212,175,55,0.5);
+  display: none;
+}
+#splash-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px, 5vw, 32px);
+  color: var(--gold);
+  font-weight: 600;
+  margin: 0 0 12px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  font-style: italic;
+}
+#splash-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 4.5vw, 26px);
+  color: rgba(255, 248, 225, 0.82);
+  line-height: 1.7;
+  margin: 0 0 32px;
+  font-style: italic;
+}
+#splash-btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 4vw, 24px);
+  color: #1a1505;
+  background: linear-gradient(135deg, #D4AF37, #f0d060, #D4AF37);
+  border: none; border-radius: 50px;
+  padding: 14px 36px;
+  cursor: pointer; letter-spacing: 0.06em;
+  font-weight: 700;
+  box-shadow: 0 4px 24px rgba(212,175,55,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#splash-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 32px rgba(212,175,55,0.65);
+}
+@keyframes btnPulse {
+  0%,100% { transform: scale(1);    box-shadow: 0 4px 24px rgba(212,175,55,0.45); }
+  50%     { transform: scale(1.06); box-shadow: 0 6px 36px rgba(212,175,55,0.8); }
+}
+@keyframes btnNudge {
+  0%,100% { transform: translateY(0); }
+  60%     { transform: translateY(-5px); }
+  75%     { transform: translateY(-2px); }
+  90%     { transform: translateY(-4px); }
+}
+#splash-btn {
+  animation: btnPulse 2s ease-in-out infinite, btnNudge 3s ease-in-out infinite;
+}
+#splash-note {
+  margin-top: 20px;
+  font-size: 15px;
+  color: rgba(255,248,225,0.45);
+  letter-spacing: 0.05em;
+}
+
+/* ── GUEST BANNER ─────────────────────────────────────── */
+#guest-banner {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  z-index: 900;
+  text-align: center;
+  padding: 10px 28px;
+  background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(30,95,95,0.18));
+  border-bottom: 1px solid rgba(212,175,55,0.35);
+  backdrop-filter: blur(6px);
+  width: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 2vw, 16px);
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+}
+#guest-banner span { font-style: italic; }
+
+/* ── SECTIONS / SLIDES ────────────────────────────────── */
+.screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 80px 24px 80px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 10;
+  overflow-y: auto;
+}
+.screen.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* BG gradients per screen — rich Indian palette */
+#screen-welcome   { background: radial-gradient(ellipse at 40% 25%, #1e6048 0%, #0e2e28 55%, #050e0e 100%); }
+#screen-haldi     { background: radial-gradient(ellipse at 60% 25%, #7a3800 0%, #4a1e00 50%, #180800 100%); }
+#screen-sangeet   { background: radial-gradient(ellipse at 40% 30%, #520d8a 0%, #300560 50%, #0d0120 100%); }
+#screen-vivaah    { background: radial-gradient(ellipse at 50% 20%, #8c0e0e 0%, #520404 50%, #160101 100%); }
+#screen-reception { background: radial-gradient(ellipse at 50% 30%, #0e3f72 0%, #061a34 50%, #010508 100%); }
+#screen-all       { background: radial-gradient(ellipse at 50% 25%, #1b4a36 0%, #0a2018 60%, #020a06 100%); }
+
+/* Ambient golden corner glows on every slide */
+.screen::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse at 10% 90%, rgba(212,175,55,0.10) 0%, transparent 40%),
+    radial-gradient(ellipse at 90% 10%, rgba(212,175,55,0.10) 0%, transparent 40%);
+}
+
+/* ── ORNAMENTAL BORDERS ───────────────────────────────── */
+.card {
+  position: relative;
+  width: min(680px, 96vw);
+  height: clamp(540px, 80vh, 620px);
+  background: rgba(255,248,225,0.05);
+  border: 1px solid rgba(212,175,55,0.4);
+  border-radius: 4px;
+  padding: clamp(20px, 4vw, 48px) clamp(20px, 5vw, 52px);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.card::before, .card::after {
+  content: '';
+  position: absolute;
+  width: 36px; height: 36px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+.corner-tr, .corner-bl {
+  position: absolute;
+  width: 36px; height: 36px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+
+/* ── TYPOGRAPHY ───────────────────────────────────────── */
+.script { font-family: 'Great Vibes', cursive; }
+
+.om {
+  font-size: clamp(24px, 5vw, 36px);
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-shadow: 0 0 20px rgba(212,175,55,0.5);
+}
+/* nudge OM down on welcome only; tighten spacing so content stays inside card */
+#screen-welcome .om         { margin-top: 10px; margin-bottom: 2px; }
+#screen-welcome .photo-wrap { margin-top: 4px; margin-bottom: 4px; }
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--gold-dark);
+  margin: 12px 0;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+}
+
+.couple-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(36px, 8vw, 72px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--gold-light);
+  text-shadow: 0 2px 24px rgba(212,175,55,0.4);
+  white-space: nowrap;
+  display: block;
+  text-transform: capitalize;
+}
+.ampersand {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(28px, 6vw, 48px);
+  color: var(--gold-dark);
+  display: block;
+  margin: 2px 0;
+}
+.couple-stack {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  width: 100%;
+}
+.name-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.couple-stack .ampersand {
+  margin-top: clamp(6px, 1.5vw, 14px);
+}
+.parent-names {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(11px, 1.8vw, 14px);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  margin-top: 2px;
+  text-align: center;
+}
+
+/* ── PHOTO FRAME ──────────────────────────────────────── */
+.photo-wrap {
+  margin: 18px auto 10px;
+  width: clamp(120px, 30vw, 180px);
+  height: clamp(120px, 30vw, 180px);
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 0 6px rgba(212,175,55,0.15), 0 0 0 10px rgba(212,175,55,0.08);
+  overflow: hidden;
+  background: rgba(255,248,225,0.08);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.photo-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* SVG placeholder couple */
+.photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── CEREMONY CARD ────────────────────────────────────── */
+.ceremony-icon {
+  font-size: clamp(40px, 10vw, 72px);
+  line-height: 1;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 0 12px rgba(212,175,55,0.6));
+}
+/* ── HAVAN KUND fire animation ───────────────────────── */
+.havan-svg { width: clamp(56px,12vw,88px); height: clamp(56px,12vw,88px); display:block; margin:0 auto 6px; overflow:visible; }
+@keyframes flicker1 { 0%,100%{transform:scaleX(1)   scaleY(1)   translateY(0)}  33%{transform:scaleX(0.85) scaleY(1.12) translateY(-3px)} 66%{transform:scaleX(1.1)  scaleY(0.92) translateY(1px)} }
+@keyframes flicker2 { 0%,100%{transform:scaleX(1)   scaleY(1)   translateY(0)}  40%{transform:scaleX(1.1)  scaleY(0.88) translateY(2px)} 70%{transform:scaleX(0.88) scaleY(1.14) translateY(-4px)} }
+@keyframes flicker3 { 0%,100%{transform:scaleX(1)   scaleY(1)   translateY(0)}  25%{transform:scaleX(0.9)  scaleY(1.18) translateY(-5px)} 75%{transform:scaleX(1.08) scaleY(0.9)  translateY(2px)} }
+.havan-fire-1 { transform-origin: 50% 100%; animation: flicker1 0.9s ease-in-out infinite; }
+.havan-fire-2 { transform-origin: 50% 100%; animation: flicker2 0.7s ease-in-out infinite 0.15s; }
+.havan-fire-3 { transform-origin: 50% 100%; animation: flicker3 1.1s ease-in-out infinite 0.3s; }
+/* ── HALDI bowl animation ────────────────────────────── */
+.haldi-svg { width: clamp(56px,12vw,88px); height: clamp(56px,12vw,88px); display:block; margin:0 auto 6px; overflow:visible; }
+@keyframes drip1 { 0%,40%{opacity:0;transform:translateY(0)} 50%{opacity:1} 90%,100%{opacity:0;transform:translateY(10px)} }
+@keyframes drip2 { 0%,55%{opacity:0;transform:translateY(0)} 65%{opacity:1} 95%,100%{opacity:0;transform:translateY(8px)} }
+.haldi-drip-1 { animation: drip1 2.2s ease-in infinite; }
+.haldi-drip-2 { animation: drip2 2.2s ease-in infinite 0.6s; }
+.ceremony-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 7vw, 56px);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 16px rgba(212,175,55,0.3);
+  margin-bottom: 4px;
+}
+.ceremony-subtitle {
+  font-size: clamp(12px, 2.2vw, 15px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,248,225,0.5);
+  margin-bottom: 20px;
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  margin: 16px 0;
+  width: 100%;
+  font-size: clamp(17px, 3vw, 22px);
+}
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+.detail-label {
+  color: var(--gold-dark);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  font-size: clamp(17px, 3vw, 22px);
+}
+.detail-value { color: var(--cream); }
+.detail-icon {
+  width: 1.1em; height: 1.1em;
+  vertical-align: -0.18em;
+  flex-shrink: 0;
+}
+
+a.maps-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--gold-light);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(212,175,55,0.4);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+a.maps-link:hover { color: #fff; border-color: #fff; }
+
+/* ── ALL EVENTS TABLE ─────────────────────────────────── */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+}
+.event-mini {
+  background: rgba(255,248,225,0.06);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 4px;
+  padding: 16px 18px;
+  text-align: left;
+}
+.event-mini-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(16px, 3vw, 20px);
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.event-mini p {
+  font-size: clamp(11px, 2vw, 13px);
+  color: rgba(255,248,225,0.72);
+  line-height: 1.7;
+}
+.event-mini a { color: var(--gold-light); text-decoration: none; }
+.event-mini a:hover { color: #fff; }
+
+/* ── NAV DOTS ─────────────────────────────────────────── */
+#nav-dots {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px; z-index: 800;
+}
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(212,175,55,0.3);
+  border: 1.5px solid rgba(212,175,55,0.5);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.dot.active { background: var(--gold); transform: scale(1.35); }
+
+/* nav arrows — hidden on all devices */
+.nav-arrow { display: none; }
+
+/* ── AUTO-ADVANCE RING ────────────────────────────────── */
+.countdown-ring {
+  position: fixed; bottom: 18px; right: 16px;
+  width: 36px; height: 36px; z-index: 800;
+  display: none;
+}
+.countdown-ring svg { transform: rotate(-90deg); }
+.countdown-ring circle.track { stroke: rgba(212,175,55,0.2); fill: none; }
+.countdown-ring circle.fill  { stroke: var(--gold); fill: none;
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+  transition: stroke-dashoffset 0.1s linear; }
+
+/* ── PAUSE TOAST ──────────────────────────────────────── */
+#pause-toast {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  background: rgba(10, 8, 4, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,175,55,0.4);
+  border-radius: 50%;
+  width: 72px; height: 72px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#pause-toast.show {
+  opacity: 1; transform: translate(-50%, -50%) scale(1);
+}
+#pause-toast svg { width: 32px; height: 32px; }
+
+/* ── ANIMATIONS ───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, var(--gold-dark) 20%, var(--gold-light) 50%, var(--gold-dark) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.3); }
+  50%       { box-shadow: 0 0 0 12px rgba(212,175,55,0); }
+}
+.photo-wrap { animation: pulse-glow 3s ease infinite; }
+
+/* ── SLIDE ENTRY animations (one per slide) ── */
+@keyframes card-rise {
+  0%   { opacity: 0; transform: translateY(55vh) scale(0.6);  filter: blur(24px); }
+  60%  { opacity: 1; filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0);    }
+}
+@keyframes card-zoom-in {
+  0%   { opacity: 0; transform: scale(0.3)  rotate(-8deg); filter: blur(28px); }
+  55%  { opacity: 1; filter: blur(6px); }
+  100% { opacity: 1; transform: scale(1)    rotate(0deg);  filter: blur(0);    }
+}
+@keyframes card-enter-right {
+  0%   { opacity: 0; transform: translateX(80vw) scale(0.75) rotate(10deg);  filter: blur(20px); }
+  55%  { opacity: 1; filter: blur(5px); }
+  100% { opacity: 1; transform: translateX(0)    scale(1)    rotate(0deg);   filter: blur(0);    }
+}
+@keyframes card-enter-left {
+  0%   { opacity: 0; transform: translateX(-80vw) scale(0.75) rotate(-10deg); filter: blur(20px); }
+  55%  { opacity: 1; filter: blur(5px); }
+  100% { opacity: 1; transform: translateX(0)     scale(1)    rotate(0deg);   filter: blur(0);    }
+}
+@keyframes card-drop {
+  0%   { opacity: 0; transform: translateY(-55vh) scale(0.65) rotate(6deg);  filter: blur(24px); }
+  55%  { opacity: 1; filter: blur(5px); }
+  100% { opacity: 1; transform: translateY(0)     scale(1)    rotate(0deg);  filter: blur(0);    }
+}
+@keyframes card-unfurl {
+  0%   { opacity: 0; transform: scale(2.2) rotate(-5deg); filter: blur(30px); }
+  55%  { opacity: 1; filter: blur(8px); }
+  100% { opacity: 1; transform: scale(1)   rotate(0deg);  filter: blur(0);   }
+}
+/* ── SLIDE EXIT animation ── */
+@keyframes card-exit {
+  0%   { opacity: 1; transform: scale(1)    translateY(0);     filter: blur(0);    }
+  40%  { filter: blur(10px); }
+  100% { opacity: 0; transform: scale(0.5)  translateY(-40vh); filter: blur(28px); }
+}
+.card.card-exit { animation: card-exit 1.4s cubic-bezier(0.55,0,1,0.8) forwards !important; }
+
+/* per-slide entry — triggered each time .visible is added to the screen */
+#screen-welcome.visible   .card { animation: card-rise        3.2s cubic-bezier(0.16,1,0.3,1) both; }
+#screen-haldi.visible     .card { animation: card-zoom-in     3.0s cubic-bezier(0.16,1,0.3,1) both; }
+#screen-sangeet.visible   .card { animation: card-enter-right 3.0s cubic-bezier(0.16,1,0.3,1) both; }
+#screen-vivaah.visible    .card { animation: card-enter-left  3.0s cubic-bezier(0.16,1,0.3,1) both; }
+#screen-reception.visible .card { animation: card-drop        3.0s cubic-bezier(0.16,1,0.3,1) both; }
+#screen-all.visible       .card { animation: card-unfurl      3.2s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ── MANDALA BACKGROUND ──────────────────────────────────── */
+#mandala-bg {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; z-index: 2; overflow: hidden;
+}
+#mandala-outer {
+  position: absolute;
+  width: min(96vw, 96vh); height: min(96vw, 96vh);
+  opacity: 0.09;
+  animation: mandala-spin 90s linear infinite;
+}
+#mandala-inner {
+  position: absolute;
+  width: min(54vw, 54vh); height: min(54vw, 54vh);
+  opacity: 0.07;
+  animation: mandala-spin 45s linear infinite reverse;
+}
+@keyframes mandala-spin { to { transform: rotate(360deg); } }
+
+/* ── CARD GOLDEN GLOW ON ENTRY ───────────────────────────── */
+.screen.visible .card {
+  box-shadow:
+    0 0 80px rgba(212,175,55,0.14),
+    0 0 24px rgba(212,175,55,0.08),
+    inset 0 0 50px rgba(212,175,55,0.05);
+}
+
+/* ── CARD CONTENT STAGGER ─────────────────────────────────── */
+@keyframes contentFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* corners are children 1 & 2 — suppress animation on them */
+.screen.visible .card > .corner-tr,
+.screen.visible .card > .corner-bl { animation: none !important; opacity: 1 !important; }
+.card.card-exit > * { animation: none !important; opacity: 1 !important; }
+
+.screen.visible .card > *:nth-child(3)  { animation: contentFadeUp 0.8s ease both; animation-delay: 0.55s; }
+.screen.visible .card > *:nth-child(4)  { animation: contentFadeUp 0.8s ease both; animation-delay: 0.80s; }
+.screen.visible .card > *:nth-child(5)  { animation: contentFadeUp 0.8s ease both; animation-delay: 1.05s; }
+.screen.visible .card > *:nth-child(6)  { animation: contentFadeUp 0.8s ease both; animation-delay: 1.30s; }
+.screen.visible .card > *:nth-child(7)  { animation: contentFadeUp 0.8s ease both; animation-delay: 1.55s; }
+.screen.visible .card > *:nth-child(8)  { animation: contentFadeUp 0.8s ease both; animation-delay: 1.80s; }
+.screen.visible .card > *:nth-child(9)  { animation: contentFadeUp 0.8s ease both; animation-delay: 2.05s; }
+
+/* ── CEREMONY ICON FLOAT ──────────────────────────────────── */
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0)   scale(1);    filter: drop-shadow(0 0 14px rgba(212,175,55,0.65)); }
+  50%       { transform: translateY(-9px) scale(1.07); filter: drop-shadow(0 0 28px rgba(212,175,55,1.0));  }
+}
+.ceremony-icon { animation: iconFloat 3.2s ease-in-out infinite !important; }
+@keyframes havanFloat {
+  0%, 100% { transform: translateY(0)   scale(1);    filter: drop-shadow(0 0 14px #FF6B00) drop-shadow(0 -4px 18px #FFD700); }
+  50%       { transform: translateY(-9px) scale(1.07); filter: drop-shadow(0 0 26px #FF4500) drop-shadow(0 -8px 28px #FFAA00); }
+}
+@keyframes haldiFloat {
+  0%, 100% { transform: translateY(0)   scale(1);    filter: drop-shadow(0 0 10px #E8A000); }
+  50%       { transform: translateY(-9px) scale(1.07); filter: drop-shadow(0 0 22px #FFD700); }
+}
+.havan-svg { animation: havanFloat 3.2s ease-in-out infinite !important; }
+.haldi-svg { animation: haldiFloat 3.2s ease-in-out infinite !important; }
+/* ── GANPATI IMAGE ──────────────────────────────────────── */
+.ganpati-svg {
+  width: clamp(100px,20vw,148px); height: clamp(100px,20vw,148px);
+  display: block; margin: 0 auto 6px;
+  object-fit: cover; border-radius: 14px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.5);
+}
+/* Per-screen: hue-rotate shifts the red bg to match the theme;
+   white Ganpati silhouette is unaffected by hue-rotate */
+@keyframes ganpatiGlowHaldi {
+  0%,100%{transform:scale(1);   filter:hue-rotate(28deg) saturate(1.2) drop-shadow(0 0 12px rgba(255,200,60,0.6))}
+  50%    {transform:scale(1.07);filter:hue-rotate(28deg) saturate(1.2) drop-shadow(0 0 28px rgba(255,200,60,1))}
+}
+@keyframes ganpatiGlowSangeet {
+  0%,100%{transform:scale(1);   filter:hue-rotate(272deg) saturate(1.4) drop-shadow(0 0 12px rgba(206,147,216,0.6))}
+  50%    {transform:scale(1.07);filter:hue-rotate(272deg) saturate(1.4) drop-shadow(0 0 28px rgba(206,147,216,1))}
+}
+@keyframes ganpatiGlowVivaah {
+  0%,100%{transform:scale(1);   filter:hue-rotate(0deg) saturate(1.1) drop-shadow(0 0 12px rgba(255,180,50,0.6))}
+  50%    {transform:scale(1.07);filter:hue-rotate(0deg) saturate(1.1) drop-shadow(0 0 28px rgba(255,215,0,1))}
+}
+@keyframes ganpatiGlowReception {
+  0%,100%{transform:scale(1);   filter:hue-rotate(214deg) saturate(1.3) drop-shadow(0 0 12px rgba(100,181,246,0.6))}
+  50%    {transform:scale(1.07);filter:hue-rotate(214deg) saturate(1.3) drop-shadow(0 0 28px rgba(100,181,246,1))}
+}
+#screen-haldi     .ganpati-svg { animation: ganpatiGlowHaldi     4s ease-in-out infinite !important; }
+#screen-sangeet   .ganpati-svg { animation: ganpatiGlowSangeet   4s ease-in-out infinite !important; }
+#screen-vivaah    .ganpati-svg { animation: ganpatiGlowVivaah    4s ease-in-out infinite !important; }
+#screen-reception .ganpati-svg { animation: ganpatiGlowReception 4s ease-in-out infinite !important; }
+
+/* ── OM PULSE ─────────────────────────────────────────────── */
+@keyframes omPulse {
+  0%, 100% { text-shadow: 0 0 18px rgba(212,175,55,0.5), 0 0 36px rgba(212,175,55,0.2); transform: scale(1) rotate(0deg); }
+  50%       { text-shadow: 0 0 32px rgba(212,175,55,1.0), 0 0 64px rgba(212,175,55,0.5), 0 0 96px rgba(212,175,55,0.2); transform: scale(1.1) rotate(3deg); }
+}
+.om { animation: omPulse 4s ease-in-out infinite !important; }
+
+/* ── THEME PARTICLE CANVAS ────────────────────────────────── */
+.theme-canvas {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: hidden; z-index: 5;
+}
+.tp {
+  position: absolute; pointer-events: none;
+  animation: tpFly linear forwards;
+}
+@keyframes tpFly {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.4) rotate(0deg); }
+  15%  { opacity: 1; }
+  85%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(var(--tx,0px), var(--ty,-120px)) scale(var(--ts,1)) rotate(var(--tr,180deg)); }
+}
+
+/* ── SUMMARY FOOTER ──────────────────────────────────────── */
+.summary-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  text-align: center;
+  width: 100%;
+}
+.diya-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 2.5vw, 20px);
+  font-size: clamp(22px, 4.5vw, 32px);
+}
+@keyframes diyaFloat {
+  0%, 100% { transform: translateY(0);   filter: drop-shadow(0 0 4px  rgba(212,175,55,0.5)); }
+  50%       { transform: translateY(-7px); filter: drop-shadow(0 0 14px rgba(212,175,55,1.0)); }
+}
+.diya-row span { display: inline-block; animation: diyaFloat 2.8s ease-in-out infinite; }
+.diya-row span:nth-child(2) { animation-delay: 0.4s; }
+.diya-row span:nth-child(3) { animation-delay: 0.8s; }
+.diya-row span:nth-child(4) { animation-delay: 1.2s; }
+.diya-row span:nth-child(5) { animation-delay: 1.6s; }
+/* ── WELCOME FOOTER ──────────────────────────────────────── */
+.welcome-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  text-align: center;
+  width: 100%;
+}
+.flower-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 2.5vw, 20px);
+  font-size: clamp(20px, 4vw, 28px);
+}
+.flower-row span { display: inline-block; animation: diyaFloat 3s ease-in-out infinite; }
+.flower-row span:nth-child(2) { animation-delay: 0.5s; }
+.flower-row span:nth-child(3) { animation-delay: 1.0s; }
+.flower-row span:nth-child(4) { animation-delay: 1.5s; }
+.flower-row span:nth-child(5) { animation-delay: 2.0s; }
+.welcome-dates {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.welcome-venue {
+  font-size: clamp(12px, 1.8vw, 15px);
+  color: rgba(255,248,225,0.55);
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+
+/* ── SPLASH RINGS ─────────────────────────────────────────── */
+.splash-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(212,175,55,0.22);
+  pointer-events: none;
+  animation: splashRingBreath ease-in-out infinite;
+}
+@keyframes splashRingBreath {
+  0%, 100% { transform: scale(1);    opacity: 0.35; }
+  50%       { transform: scale(1.06); opacity: 0.12; }
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+
+/* Tablet: 641px – 1024px */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .card { padding: 36px 40px; height: clamp(540px, 80vh, 620px); }
+  .couple-names { font-size: clamp(52px, 9vw, 76px); }
+  .ceremony-title { font-size: clamp(34px, 6vw, 50px); }
+  .events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Phone portrait: <= 640px */
+@media (max-width: 640px) {
+  /* Guest banner more compact */
+  #guest-banner { font-size: 12px; padding: 8px 16px; }
+
+  /* Give screens a bit more breathing room top/bottom */
+  .screen { padding: 70px 10px 58px; }
+
+  /* Card: full width, taller so content breathes comfortably */
+  .card { width: 98vw; padding: 20px 14px; height: clamp(460px, 84vh, 560px); }
+
+  /* Splash inner: narrower side padding on small screens */
+  #splash-inner { padding: 32px 20px; }
+
+  /* Bigger couple names use viewport width so they scale on any phone */
+  .couple-names { font-size: clamp(28px, 8.5vw, 52px); white-space: nowrap; }
+  .ampersand    { font-size: clamp(22px, 6vw, 36px); }
+
+  /* Photo on other slides */
+  .photo-wrap { width: 110px; height: 110px; }
+
+  /* ── First slide: bigger photo + generous gaps ── */
+  #screen-welcome .card       { justify-content: flex-start; padding-top: 22px; }
+  #screen-welcome .photo-wrap { width: 155px; height: 155px; margin-top: 14px; margin-bottom: 14px; }
+  #screen-welcome .om         { margin-top: 0; margin-bottom: 10px; font-size: clamp(28px, 7vw, 36px); }
+  #screen-welcome .divider    { margin-bottom: 8px; }
+  #screen-welcome .couple-stack { gap: 18px; margin-top: 10px; }
+  #screen-welcome .parent-names  { font-size: 13px; margin-top: 5px; line-height: 1.6; }
+  #screen-welcome .welcome-footer { padding-top: 10px; }
+  #screen-welcome .flower-row     { font-size: 18px; gap: 10px; }
+  #screen-welcome .welcome-dates  { font-size: 13px; margin-top: 6px; }
+  #screen-welcome .welcome-venue  { font-size: 11px; margin-top: 3px; }
+
+  /* ── Ceremony slides ── */
+  .ceremony-icon     { font-size: clamp(36px, 12vw, 56px); }
+  .ceremony-title    { font-size: clamp(28px, 9vw, 44px); }
+  .ceremony-subtitle { font-size: 12px; letter-spacing: 0.2em; margin-bottom: 14px; }
+  .detail-grid       { font-size: 15px; gap: 10px; margin: 10px 0; }
+  /* Allow detail rows to wrap on very narrow phones */
+  .detail-row        { flex-wrap: wrap; gap: 4px 10px; }
+
+  /* ── Summary screen: single column, sized to fill the card ── */
+  #screen-all .card             { justify-content: flex-start; padding-top: 16px; overflow-y: hidden; }
+  #screen-all .om               { font-size: 22px; margin-bottom: 4px; }
+  #screen-all .ceremony-title   { font-size: 17px !important; margin-bottom: 3px; }
+  #screen-all .divider          { margin: 6px 0 !important; }
+  #screen-all .events-grid      { grid-template-columns: 1fr; gap: 12px; margin-top: 8px; }
+  #screen-all .event-mini       { padding: 10px 12px; }
+  #screen-all .event-mini-title { font-size: 14px; margin-bottom: 3px; }
+  #screen-all .event-mini p     { font-size: 12px; line-height: 1.45; }
+  #screen-all .card > p         { font-size: 13px !important; margin-top: 4px; }
+  #screen-all .summary-footer   { padding-top: 10px; }
+  #screen-all .diya-row         { font-size: 20px; gap: 12px; }
+
+  /* Dots: larger hit area */
+  .dot { width: 10px; height: 10px; }
+}
+
+/* Short landscape phones (e.g. iPhone SE landscape) */
+@media (max-height: 500px) {
+  .screen       { padding-top: 52px; padding-bottom: 48px; overflow-y: auto; }
+  .photo-wrap   { width: 72px; height: 72px; }
+  .couple-names { font-size: 38px; }
+  .om           { font-size: 20px; }
+  .divider      { margin: 6px 0; }
+  .ceremony-icon { font-size: 32px; margin-bottom: 2px; }
+  .ceremony-title { font-size: 28px; }
+}
+
+/* Very short screens (e.g. small Android landscape) */
+@media (max-height: 380px) {
+  .photo-wrap { display: none; }
+  .screen     { padding-top: 48px; }
+}

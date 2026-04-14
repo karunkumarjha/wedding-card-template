@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="You are warmly invited to celebrate our wedding — a digital invitation with an Indian ethnic theme." />
+  <meta property="og:title" content="Wedding Invitation" />
+  <meta property="og:description" content="Join us for Haldi, Sangeet, Vivaah & Reception." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0d1c1c" />
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml" />
+  <title>Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ── Splash Screen ──────────────────────────────────── -->
+<div id="splash">
+  <div class="splash-ring" style="width:220px;height:220px;animation-duration:4s;"></div>
+  <div class="splash-ring" style="width:340px;height:340px;animation-duration:6s;animation-delay:0.8s;"></div>
+  <div class="splash-ring" style="width:480px;height:480px;animation-duration:9s;animation-delay:1.6s;"></div>
+  <div class="splash-ring" style="width:640px;height:640px;animation-duration:12s;animation-delay:2.4s;border-style:dashed;"></div>
+  <div id="splash-inner">
+    <div id="splash-shri-ganesh">श्री गणेशाय नमः</div>
+    <div id="splash-couple" style="width:clamp(180px,48vw,260px);height:clamp(180px,48vw,260px);border-radius:50%;border:3px solid rgba(212,175,55,0.7);box-shadow:0 0 32px rgba(212,175,55,0.4);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;background:rgba(255,248,225,0.08);font-size:64px;">👫</div>
+    <p id="splash-guest"></p>
+    <h1 id="splash-title">Please grace us with your presence on our special day.</h1>
+<button id="splash-btn" aria-label="Open the wedding invitation">Open Invitation 💍</button>
+    <p id="splash-note">🔊 Best experienced with sound on</p>
+  </div>
+</div>
+
+<!-- ── Mandala background ──────────────────────────────── -->
+<div id="mandala-bg">
+  <div id="mandala-outer"></div>
+  <div id="mandala-inner"></div>
+</div>
+
+<!-- ── Audio Player (hidden) ──────────────────────────── -->
+<audio id="bg-audio" src="assets/audio/music.mp3" loop preload="auto"></audio>
+
+<!-- ── Guest Banner (hidden by default; shown only when ?guest= is set) ── -->
+<div id="guest-banner" style="display:none">
+  <span id="guest-text"></span>
+</div>
+
+<!-- ── Nav dots ────────────────────────────────────────── -->
+<div id="nav-dots"></div>
+
+<!-- ── Pause toast ──────────────────────────────────────── -->
+<div id="pause-toast">
+  <svg id="pause-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(212,175,55,0.9)" stroke-width="2.2" stroke-linecap="round">
+    <rect x="6" y="4" width="4" height="16" rx="1" fill="rgba(212,175,55,0.9)" stroke="none"/>
+    <rect x="14" y="4" width="4" height="16" rx="1" fill="rgba(212,175,55,0.9)" stroke="none"/>
+  </svg>
+  <svg id="play-icon" viewBox="0 0 24 24" fill="none" style="display:none">
+    <polygon points="5,3 19,12 5,21" fill="rgba(212,175,55,0.9)"/>
+  </svg>
+</div>
+
+<!-- ── Floating petals ─────────────────────────────────── -->
+<div id="petals-canvas"></div>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN 0 — WELCOME
+     ══════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-welcome" aria-label="Welcome">
+  <div class="card">
+    <div class="corner-tr"></div><div class="corner-bl"></div>
+
+    <div class="om">ॐ</div>
+    <div class="divider" style="font-size:clamp(16px,2.5vw,22px);letter-spacing:0.2em;font-weight:600;">Shubh Vivah</div>
+
+    <!-- Couple photo placeholder -->
+    <div class="photo-wrap" id="couple-photo">
+      <div class="photo-placeholder" style="font-size:48px;">👫</div>
+    </div>
+
+    <div class="couple-stack">
+      <div class="name-group">
+        <span class="couple-names shimmer-text">Groom</span>
+        <div class="parent-names">Father's Name<br/>&amp; Mother's Name</div>
+      </div>
+      <span class="ampersand">&amp;</span>
+      <div class="name-group">
+        <span class="couple-names shimmer-text">Bride</span>
+        <div class="parent-names">Father's Name<br/>&amp; Mother's Name</div>
+      </div>
+    </div>
+
+    <div class="welcome-footer">
+      <p class="welcome-dates">DD Month &amp; DD Month YYYY</p>
+      <p class="welcome-venue">CITY</p>
+      <div class="flower-row">
+        <span>🌸</span><span>🪷</span><span>🌸</span><span>🪷</span><span>🌸</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN 1 — HALDI
+     ══════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-haldi">
+  <div class="theme-canvas" id="tc-haldi"></div>
+  <div class="card">
+    <div class="corner-tr"></div><div class="corner-bl"></div>
+    <div class="ceremony-icon">🌼</div>
+    <div class="ceremony-title">Haldi</div>
+    <div class="ceremony-subtitle">The Sacred Turmeric Ceremony</div>
+    <div class="divider"></div>
+    <div class="detail-grid">
+      <div class="detail-row"><span class="detail-label">📅 Date</span><span class="detail-value">Day, DD Month YYYY</span></div>
+      <div class="detail-row"><span class="detail-label">⏰ Time</span><span class="detail-value">12:00 PM onwards</span></div>
+      <div class="detail-row"><span class="detail-label">📍 Venue</span><span class="detail-value"><a class="maps-link" href="#" target="_blank" rel="noopener">🗺 Venue Name</a></span></div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:clamp(16px,3vw,22px);color:rgba(255,248,225,0.85);line-height:1.8;font-style:italic;font-weight:600;">
+      A joyous morning of turmeric, laughter, and love —<br/>blessings painted in gold.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN 2 — SANGEET
+     ══════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-sangeet">
+  <div class="theme-canvas" id="tc-sangeet"></div>
+  <div class="card">
+    <div class="corner-tr"></div><div class="corner-bl"></div>
+    <div class="ceremony-icon">🎶</div>
+    <div class="ceremony-title">Sangeet</div>
+    <div class="ceremony-subtitle">An Evening of Music &amp; Dance</div>
+    <div class="divider"></div>
+    <div class="detail-grid">
+      <div class="detail-row"><span class="detail-label">📅 Date</span><span class="detail-value">Day, DD Month YYYY</span></div>
+      <div class="detail-row"><span class="detail-label">⏰ Time</span><span class="detail-value">4:00 PM onwards</span></div>
+      <div class="detail-row"><span class="detail-label">📍 Venue</span><span class="detail-value"><a class="maps-link" href="#" target="_blank" rel="noopener">🗺 Venue Name</a></span></div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:clamp(16px,3vw,22px);color:rgba(255,248,225,0.85);line-height:1.8;font-style:italic;font-weight:600;">
+      An evening filled with music, dance, and the warmth of<br/>family and friends coming together.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN 3 — VIVAAH
+     ══════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-vivaah">
+  <div class="theme-canvas" id="tc-vivaah"></div>
+  <div class="card">
+    <div class="corner-tr"></div><div class="corner-bl"></div>
+    <div class="ceremony-icon">🪔</div>
+    <div class="ceremony-title">Vivaah</div>
+    <div class="ceremony-subtitle">The Sacred Wedding Ceremony</div>
+    <div class="divider"></div>
+    <div class="detail-grid">
+      <div class="detail-row"><span class="detail-label">📅 Date</span><span class="detail-value">Day, DD Month YYYY</span></div>
+      <div class="detail-row"><span class="detail-label">⏰ Time</span><span class="detail-value">9:00 AM onwards</span></div>
+      <div class="detail-row"><span class="detail-label">📍 Venue</span><span class="detail-value"><a class="maps-link" href="#" target="_blank" rel="noopener">🗺 Venue Name</a></span></div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:clamp(16px,3vw,22px);color:rgba(255,248,225,0.85);line-height:1.8;font-style:italic;font-weight:600;">
+      Two souls unite in the sacred fire —<br/>joined forever by love and the Vedic rites.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN 4 — RECEPTION
+     ══════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-reception">
+  <div class="theme-canvas" id="tc-reception"></div>
+  <div class="card">
+    <div class="corner-tr"></div><div class="corner-bl"></div>
+    <div class="ceremony-icon">✨</div>
+    <div class="ceremony-title">Reception</div>
+    <div class="ceremony-subtitle">A Grand Celebration</div>
+    <div class="divider"></div>
+    <div class="detail-grid">
+      <div class="detail-row"><span class="detail-label">📅 Date</span><span class="detail-value">Day, DD Month YYYY</span></div>
+      <div class="detail-row"><span class="detail-label">⏰ Time</span><span class="detail-value">6:00 PM onwards</span></div>
+      <div class="detail-row"><span class="detail-label">📍 Venue</span><span class="detail-value"><a class="maps-link" href="#" target="_blank" rel="noopener">🗺 Venue Name</a></span></div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:clamp(16px,3vw,22px);color:rgba(255,248,225,0.85);line-height:1.8;font-style:italic;font-weight:600;">
+      Join us for an evening of elegance, joy, and celebration<br/>as we welcome the newlyweds.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN 5 — ALL EVENTS (SUMMARY)
+     ══════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-all">
+  <div class="card" style="max-width:min(780px,96vw)">
+    <div class="corner-tr"></div><div class="corner-bl"></div>
+
+    <div class="om">ॐ</div>
+    <div class="ceremony-title" style="font-size:clamp(22px,5vw,38px)">We warmly invite you to</div>
+    <div class="divider"></div>
+
+    <div class="events-grid">
+      <div class="event-mini">
+        <div class="event-mini-title">🌼 Haldi</div>
+        <p>Day, DD Mon YYYY · 12:00 PM<br/>
+           <a href="#" target="_blank" rel="noopener">📍 Venue Name</a>
+        </p>
+      </div>
+      <div class="event-mini">
+        <div class="event-mini-title">🎶 Sangeet</div>
+        <p>Day, DD Mon YYYY · 4:00 PM<br/>
+           <a href="#" target="_blank" rel="noopener">📍 Venue Name</a>
+        </p>
+      </div>
+      <div class="event-mini">
+        <div class="event-mini-title">🪔 Vivaah</div>
+        <p>Day, DD Mon YYYY · 9:00 AM<br/>
+           <a href="#" target="_blank" rel="noopener">📍 Venue Name</a>
+        </p>
+      </div>
+      <div class="event-mini">
+        <div class="event-mini-title">✨ Reception</div>
+        <p>Day, DD Mon YYYY · 6:00 PM<br/>
+           <a href="#" target="_blank" rel="noopener">📍 Venue Name</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="divider" style="margin-top:20px;"></div>
+    <p style="font-size:clamp(16px,3vw,22px);color:rgba(255,248,225,0.85);font-style:italic;font-weight:600;">
+      Your presence and blessings will make our celebration complete. ❤️
+    </p>
+
+    <div class="summary-footer">
+      <div class="diya-row">
+        <span>🪔</span><span>🌸</span><span>🪔</span><span>🌸</span><span>🪔</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/main.js"></script>
+</body>
+</html>
