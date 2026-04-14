@@ -70,35 +70,94 @@ No build tools, no package managers, no servers required.
 
 ## Customising for Your Wedding
 
-All personal details in this template are placeholders. To customise:
+All personal details in this template are fictional placeholders (Arjun & Meera, Umaid Bhawan Palace, November 2027). Follow the steps below to make it yours — all edits are in `index.html` unless noted otherwise.
 
-1. **Couple & parent names** — edit the `.couple-names` and `.parent-names` in `index.html` (welcome slide)
-2. **Photos** — add `assets/images/couple.jpg` and `assets/images/couple-illustration.jpg`, then reference them in `index.html`
-3. **Event dates, times, venues** — update each ceremony section in `index.html` (Haldi, Sangeet, Vivaah, Reception, and the summary slide)
-4. **Maps links** — replace the `href="#"` on `.maps-link` anchors with your Google Maps URLs
-5. **Background music** — drop an MP3 file at `assets/audio/music.mp3`
-6. **Meta tags** — update title, description, `og:url`, `og:image` in `index.html`
-7. **Colours** — customise CSS variables at the top of `css/styles.css` (`--gold`, `--teal`, etc.)
+### 1. Fork & clone
 
-## Personalised Guest Links
-
-Append `?guest=Name` to the URL to show a personalised greeting on the splash screen:
-
-```
-https://your-domain.com?guest=Rahul
-https://your-domain.com?guest=Priya
+```bash
+# Fork this repo on GitHub, then:
+git clone https://github.com/<your-username>/wedding-card-template.git
+cd wedding-card-template
+open index.html   # preview locally
 ```
 
-## Deployment
+### 2. Update the welcome slide
 
-This is a static site — deploy anywhere:
+In `index.html`, find the `SCREEN 0 — WELCOME` section:
 
-- **GitHub Pages** — push to `main`, enable Pages in repo Settings
-- **Cloudflare Pages** — connect GitHub repo, leave build command empty
-- **Netlify** — drag-and-drop the folder, or connect a repo
-- **Vercel** — same as above
+- Replace `Arjun` and `Meera` inside `<span class="couple-names shimmer-text">` with your names
+- Replace the parent names inside `<div class="parent-names">` (groom's parents first, then bride's)
+- Update `<p class="welcome-dates">` with your wedding dates
+- Update `<p class="welcome-venue">` with your city (e.g., `JAIPUR`, `JODHPUR`, `MUMBAI`)
 
-All four provide free hosting with HTTPS and custom domain support.
+### 3. Update each ceremony slide (Haldi, Sangeet, Vivaah, Reception)
+
+Each ceremony section has three fields to update:
+
+- `📅 Date` — `Saturday, 20 November 2027` → your date (keep the `Day, DD Month YYYY` format so the date icon renders correctly)
+- `⏰ Time` — `12:00 PM onwards` → your time (keep `HH:MM AM/PM` format)
+- `📍 Venue` — update the `href` with your Google Maps link and the visible venue name
+
+> **Tip:** To get a clean Maps link, open Google Maps, search your venue, click **Share → Copy link** — you'll get a `https://maps.app.goo.gl/...` short link that points to the exact location.
+
+Don't forget to update the same details in the `SCREEN 5 — ALL EVENTS` summary slide too.
+
+### 4. Add your photos (optional)
+
+The template uses a 👫 emoji as the couple photo placeholder. To use real photos:
+
+1. Drop your images into `assets/images/` (e.g., `couple.jpg`, `splash.jpg`)
+2. In `index.html`, replace the `.photo-placeholder` div with: `<img src="assets/images/couple.jpg" alt="Couple photo" />`
+3. For the splash screen couple illustration, edit `#splash-couple` similarly
+
+> **Copyright note:** Don't use Studio Ghibli stills, celebrity photos, or any copyrighted art in a public repo — use your own photos, commissioned illustrations, or royalty-free art from Unsplash/Pexels.
+
+### 5. Replace the background music
+
+The template ships with **Raga Tilanga (1937, Ravi Shankar)** — a public-domain Indian classical track. To use your own:
+
+1. Drop your MP3 at `assets/audio/music.mp3` (overwrite the existing file)
+2. Make sure you have the right to use it — prefer public-domain, Creative Commons, or royalty-free sources like:
+   - [Wikimedia Commons](https://commons.wikimedia.org/)
+   - [Free Music Archive](https://freemusicarchive.org/)
+   - [Incompetech](https://incompetech.com/music/royalty-free/)
+3. Update the audio attribution at the bottom of this README
+
+### 6. Update meta tags for social sharing
+
+In `index.html` `<head>`, update:
+
+- `<title>` — your names + "Wedding Invitation"
+- `<meta name="description">` — a short summary with dates and city
+- `<meta property="og:title">` and `<meta property="og:description">` — these show in WhatsApp/LinkedIn previews
+- Optionally add `<meta property="og:url">` and `<meta property="og:image">` once deployed
+
+### 7. Guest banner text (optional)
+
+In `js/main.js`, line 45, update the "With love from Arjun & Meera" string to your names.
+
+### 8. Colours & fonts (optional)
+
+CSS variables at the top of `css/styles.css` control the palette — `--gold`, `--teal`, `--cream`, etc. Tweak these to match your wedding theme.
+
+### 9. Deploy
+
+- **Cloudflare Pages** (recommended for privacy — you can keep your repo private): connect the repo, no build command, publish dir = `/`
+- **GitHub Pages**: Settings → Pages → Deploy from branch `main`
+- **Netlify / Vercel**: drag-and-drop or connect the repo
+
+All four provide free HTTPS and custom domain support.
+
+### 10. Personalised guest links
+
+Share invitations with a named greeting by appending `?guest=Name`:
+
+```
+https://your-domain.com/?guest=Rahul
+https://your-domain.com/?guest=Priya
+```
+
+The splash screen will show "Dear Rahul," above the invitation title.
 
 ## Browser Support
 
