@@ -42,7 +42,7 @@
     splashGuest.style.display = 'block';
     // Slide banner
     const guestEl = document.getElementById('guest-text');
-    guestEl.innerHTML = `With love from the couple`;
+    guestEl.innerHTML = `With love from Arjun &amp; Meera`;
     document.getElementById('guest-banner').style.display = 'block';
   }
 

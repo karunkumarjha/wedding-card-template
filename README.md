@@ -111,3 +111,7 @@ Tested on all modern browsers (Chrome, Safari, Firefox, Edge). Requires support 
 ## Acknowledgements
 
 Built with love and a lot of marigold petals. 🌸
+
+### Audio Attribution
+
+The background music `assets/audio/music.mp3` is **"Raga Tilanga"** (1937) — Ravi Shankar's first recording, now in the **public domain**. Source: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Raga_Tilanga.ogg).
